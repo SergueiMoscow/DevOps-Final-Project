@@ -1,0 +1,21 @@
+[all]
+control-plane ansible_host=${control_plane_ip} ansible_user=ubuntu ansible_ssh_private_key_file=../infra/id_ed25519
+worker-0 ansible_host=${worker_ip_0} ansible_user=ubuntu ansible_ssh_private_key_file=../infra/id_ed25519
+worker-1 ansible_host=${worker_ip_1} ansible_user=ubuntu ansible_ssh_private_key_file=../infra/id_ed25519
+
+[kube_control_plane]
+control-plane
+
+[etcd]
+control-plane
+
+[kube_node]
+worker-0
+worker-1
+
+[calico_rr]
+
+[k8s_cluster:children]
+kube_control_plane
+kube_node
+calico_rr
