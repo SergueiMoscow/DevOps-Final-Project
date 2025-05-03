@@ -39,3 +39,4 @@ terraform.rc
 *.lock.hcl
 id_ed25519.*
 registry_sa_key.json
+sss/

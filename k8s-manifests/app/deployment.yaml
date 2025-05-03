@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netology-devops-app
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: netology-devops-app
+  template:
+    metadata:
+      labels:
+        app: netology-devops-app
+    spec:
+      containers:
+      - name: netology-devops-app
+        image: cr.yandex/<registry_id>/netology-devops-app:latest
+        ports:
+        - containerPort: 80

@@ -97,13 +97,12 @@ chmod +x deploy_k8s.sh
 ```bash
 ansible -i kubespray/inventory/mycluster/inventory.ini all -m ping
 ```
-Результат будет примерно таким:
+Результат:
 ![ansible ping](images/image02.png)
 
 Запускаем 
 ```
 ./deploy_k8s.sh
-
 ```
 Указывает на старую версию Ansible
 ![ansible version](images/image03.png)
@@ -178,6 +177,7 @@ yc iam key create \
 ```
 yc container registry configure-docker
 ```
+### Создание образа в Yandex Container Registry
 Собираем образ (в директории с приложением)
 ```
 registry_id=$(terraform -chdir=../Diplom/registry output -raw registry_id)
@@ -186,3 +186,51 @@ docker push cr.yandex/$registry_id/netology-devops-app:latest
 ```
 Проверяем в консоли YC:  
 ![YC registry](images/image09.png)
+
+## Подготовка cистемы мониторинга и деплой приложения
+
+### Подготовка мониторинга
+Будем использовать пакет [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus)
+
+Скачиваем манифесты kube-prometheus (версия 0.14.0), выполняем в директории с приложением:
+```
+wget https://github.com/prometheus-operator/kube-prometheus/archive/v0.14.0.tar.gz
+tar -xzf v0.14.0.tar.gz
+mv kube-prometheus-0.14.0/manifests .
+rm -rf kube-prometheus-0.14.0 v0.14.0.tar.gz
+```
+
+Применяем манифесты:  
+```
+kubectl apply --server-side -f manifests/setup
+kubectl wait \
+	--for condition=Established \
+	--all CustomResourceDefinition \
+	--namespace=monitoring
+kubectl apply -f manifests/
+```
+
+Проверяем:
+```
+kubectl get pods -n monitoring
+```
+![monitoring pods](images/image10.png)
+
+Ставим ingress:
+```
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.2/deploy/static/provider/cloud/deploy.yaml
+```
+
+Проверяем:  
+```
+kubectl get pods -n ingress-nginx
+```
+![ingress-nginx pods](images/image11.png)
+
+Пишем ingress для grafana
+[grafana-ingress.yaml](https://github.com/SergueiMoscow/DevOps_nginx_page....sss дописать)
+
+Применяем ingress:  
+```
+kubectl apply -f monitoring/grafana-ingress.yaml
+```

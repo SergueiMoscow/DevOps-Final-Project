@@ -32,6 +32,12 @@ resource "yandex_iam_service_account_static_access_key" "sa-static-key" {
   description        = "static access key for object storage"
 }
 
+resource "yandex_resourcemanager_folder_iam_member" "sa-load-balancer" {
+  folder_id = var.folder_id
+  role      = "load-balancer.admin"
+  member    = "serviceAccount:${yandex_iam_service_account.sa.id}"
+}
+
 resource "yandex_kms_symmetric_key" "key-a" {
   name              = "sss-symmetric-key"
   description       = "sss symmetric key"

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: atlantis
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: atlantis
+  template:
+    metadata:
+      labels:
+        app: atlantis
+    spec:
+      containers:
+      - name: atlantis
+        image: ghcr.io/runatlantis/atlantis:v0.27.0
+        env:
+        - name: ATLANTIS_GH_USER
+          value: "<your-github-username>"
+        - name: ATLANTIS_GH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: atlantis-secrets
+              key: github-token
+        - name: ATLANTIS_GH_WEBHOOK_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: atlantis-secrets
+              key: webhook-secret
+        - name: ATLANTIS_REPO_ALLOWLIST
+          value: "github.com/<your-github-username>/DevOps-Diploma"
+        - name: ATLANTIS_DATA_DIR
+          value: "/atlantis-data"
+        - name: ATLANTIS_PORT
+          value: "4141"
+        volumeMounts:
+        - name: atlantis-data
+          mountPath: /atlantis-data
+        ports:
+        - containerPort: 4141
+      volumes:
+      - name: atlantis-data
+        emptyDir: {}
