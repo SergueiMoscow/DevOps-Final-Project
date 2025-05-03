@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: netology-devops-app
-        image: cr.yandex/<registry_id>/netology-devops-app:latest
+        image: cr.yandex/crpbviuosgcnbunnv1fc/netology-devops-app:latest
         ports:
         - containerPort: 80
