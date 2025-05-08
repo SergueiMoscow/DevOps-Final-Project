@@ -1,0 +1,4 @@
+cloud_id    = "<your_cloud_id>"
+folder_id   = "<your_folder_id>"
+default_zone = "ru-central1-a"
+bucket_name = "<your_bucket_name>"

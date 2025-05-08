@@ -1,0 +1,68 @@
+{
+  "control_plane_internal_ip": {
+    "sensitive": false,
+    "type": "string",
+    "value": "10.10.1.20"
+  },
+  "control_plane_ip": {
+    "sensitive": false,
+    "type": "string",
+    "value": "51.250.10.227"
+  },
+  "subnet_ids": {
+    "sensitive": false,
+    "type": [
+      "object",
+      {
+        "ru-central1-a": "string",
+        "ru-central1-b": "string",
+        "ru-central1-d": "string"
+      }
+    ],
+    "value": {
+      "ru-central1-a": "e9btjhca5p4ju0eb9g5q",
+      "ru-central1-b": "e2ln1rfegjfnvavc4l2e",
+      "ru-central1-d": "fl8uhuqsa3rs1hdivc01"
+    }
+  },
+  "subnet_zones": {
+    "sensitive": false,
+    "type": [
+      "list",
+      "string"
+    ],
+    "value": [
+      "ru-central1-a",
+      "ru-central1-b",
+      "ru-central1-d"
+    ]
+  },
+  "worker_internal_ips": {
+    "sensitive": false,
+    "type": [
+      "tuple",
+      [
+        "string",
+        "string"
+      ]
+    ],
+    "value": [
+      "10.10.2.24",
+      "10.10.3.11"
+    ]
+  },
+  "worker_ips": {
+    "sensitive": false,
+    "type": [
+      "tuple",
+      [
+        "string",
+        "string"
+      ]
+    ],
+    "value": [
+      "51.250.22.46",
+      "51.250.32.66"
+    ]
+  }
+}

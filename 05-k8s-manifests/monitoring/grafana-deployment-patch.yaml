@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  template:
+    spec:
+      containers:
+      - name: grafana
+        env:
+        - name: GF_SERVER_ROOT_URL
+          value: http://netology2.sushkovs.ru/grafana
+        - name: GF_SERVER_SERVE_FROM_SUB_PATH
+          value: "true"
