@@ -1,0 +1,54 @@
+name: Terraform Infrastructure
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - '02-infra/**'
+      - '.github/workflows/terraform.yml'
+
+jobs:
+  terraform:
+    name: Terraform Plan/Apply
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./02-infra
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.11.3
+
+      - name: Configure AWS CLI (для доступа к S3 бакету)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.YC_S3_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.YC_S3_SECRET_KEY }}
+          aws-region: ru-central1
+
+      - name: Prepare files
+        run: |
+          echo "${{ secrets.YC_SERVICE_ACCOUNT_KEY }}" > sa_key.json
+          echo "${{ secrets.TF_VARS }}" > main.auto.tfvars
+          chmod 600 sa_key.json
+
+      - name: Terraform Init
+        run: terraform init -backend-config="access_key=sa_key.json"
+
+      - name: Terraform Format
+        run: terraform fmt -check
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -var-file=main.auto.tfvars
+        continue-on-error: false
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve -var-file=main.auto.tfvars

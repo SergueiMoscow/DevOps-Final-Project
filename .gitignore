@@ -42,3 +42,4 @@ id_ed25519.*
 registry_sa_key.json
 sss/
 **/kubespray/*
+06-load_balancer/
