@@ -25,16 +25,22 @@ jobs:
 
       - name: Prepare YC credentials
         run: |
-          echo "${{ secrets.YC_SERVICE_ACCOUNT_KEY }}" > sa_key.json
+          echo "${{ secrets.YC_SERVICE_ACCOUNT_KEY }}" > ~/.yc_authorized_key.json
           echo "${{ secrets.TF_VARS }}" > main.auto.tfvars
           chmod 600 sa_key.json
 
-      - name: Configure YC CLI (опционально, если нужен доступ к YC CLI)
+      - name: Debug files
         run: |
-          curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash -s -- -i /usr/local -n
-          echo "${{ secrets.YC_SERVICE_ACCOUNT_KEY }}" | yc config set service-account-key -
-          yc config set cloud-id ${{ secrets.YC_CLOUD_ID }}
-          yc config set folder-id ${{ secrets.YC_FOLDER_ID }}
+          ls -la
+          cat sa_key.json
+          cat main.auto.tfvars
+
+      # - name: Configure YC CLI
+      #   run: |
+      #     curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash -s -- -i /usr/local -n
+      #     echo "${{ secrets.YC_SERVICE_ACCOUNT_KEY }}" | yc config set service-account-key -
+      #     yc config set cloud-id ${{ secrets.YC_CLOUD_ID }}
+      #     yc config set folder-id ${{ secrets.YC_FOLDER_ID }}
 
       - name: Terraform Init
         env:
