@@ -6,8 +6,8 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-  - 84.252.139.17/32
-  - 158.160.181.244/32
+  - 158.160.83.54/32
+  - 158.160.150.22/32
   autoAssign: true
 ---
 apiVersion: metallb.io/v1beta1
@@ -18,16 +18,3 @@ metadata:
 spec:
   ipAddressPools:
   - yc-pool
-# ---
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   name: metallb
-#   namespace: metallb-system
-# data:
-#   config: |
-#     address-pools:
-#     - name: yc-pool
-#       protocol: layer2
-#       addresses:
-#       - 89.169.141.44/32

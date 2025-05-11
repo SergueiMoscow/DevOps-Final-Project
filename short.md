@@ -1,6 +1,7 @@
 cd 01-sa_bucket
 terraform apply
 
+# Инфраструктура
 cd ../02-infra
 ./init_backend.sh
 terraform apply
@@ -25,6 +26,11 @@ sed -e "s/strictARP: false/strictARP: true/" | \
 kubectl apply -f - -n kube-system
 
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
+
+# Генерируем metallb-config:
+```bash
+./generate-metallb-config.sh
+```
 
 kubectl apply -f metallb/metallb-config.yaml
 
