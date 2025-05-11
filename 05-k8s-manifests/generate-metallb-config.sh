@@ -38,14 +38,14 @@ spec:
 EOF
 echo "Generated metallb/metallb-config.yaml with IPs: ${WORKER_IP_0}, ${WORKER_IP_1}"
 
-# Обновляем ingress-nginx-service.yaml с новым loadBalancerIP
-if [ -f ingress/ingress-nginx-service.yaml ]; then
-  sed -i "s/loadBalancerIP: .*/loadBalancerIP: ${WORKER_IP_0}/" ingress/ingress-nginx-service.yaml
-  echo "Updated ingress/ingress-nginx-service.yaml with IP: ${WORKER_IP_0}"
-else
-  echo "Error: ingress/ingress-nginx-service.yaml not found"
-  exit 1
-fi
+# # Обновляем ingress-nginx-service.yaml с новым loadBalancerIP
+# if [ -f ingress/ingress-nginx-service.yaml ]; then
+#   sed -i "s/loadBalancerIP: .*/loadBalancerIP: ${WORKER_IP_0}/" ingress/ingress-nginx-service.yaml
+#   echo "Updated ingress/ingress-nginx-service.yaml with IP: ${WORKER_IP_0}"
+# else
+#   echo "Error: ingress/ingress-nginx-service.yaml not found"
+#   exit 1
+# fi
 
 # Обновляем app/service.yaml с новым loadBalancerIP
 if [ -f app/service.yaml ]; then
@@ -55,3 +55,4 @@ else
   echo "Error: app/service.yaml not found"
   exit 1
 fi
+exit 0

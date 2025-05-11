@@ -111,3 +111,19 @@ kubectl patch deployment -n monitoring grafana --patch-file monitoring/grafana-d
 kubectl apply -f monitoring/grafana-ingress.yaml
 
 kubectl apply -f monitoring/grafana-networkpolicy.yaml
+
+### Настройка мониторинга
+grafana default login-password: admin - admin
+
+Смотрим, что есть в DataSources:
+![DataSource](images/image21.png)
+
+Добавляем (импортируем) Dashboards, например:
+315 (Kubernetes cluster monitoring (via Prometheus))
+1860 (Node Exporter Full)
+
+![Import Dashboard](images/image22.png)
+
+Проверяем:  
+![Dashboards](images/image23.png)
+
