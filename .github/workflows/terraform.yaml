@@ -23,11 +23,18 @@ jobs:
         with:
           terraform_version: 1.11.4
 
-      - name: Prepare YC credentials
+      - name: Create YC auth key file
         run: |
-          echo "${{ secrets.YC_SERVICE_ACCOUNT_KEY }}" > ~/.yc_authorized_key.json
-          echo "${{ secrets.TF_VARS }}" > main.auto.tfvars
+          cat <<EOF > ~/.yc_authorized_key.json
+          ${{ secrets.YC_SERVICE_ACCOUNT_KEY }}
+          EOF
           chmod 600 ~/.yc_authorized_key.json
+
+      - name: Create TF vars file
+        run: |
+          cat <<EOF > main.auto.tfvars
+          ${{ secrets.TF_VARS }}
+          EOF
 
       - name: Debug files
         run: |
