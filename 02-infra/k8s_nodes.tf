@@ -107,7 +107,7 @@ resource "yandex_compute_instance" "k8s_worker" {
   scheduling_policy {
     preemptible = false # Прерываемая ВМ
   }
-  allow_stopping_for_update = true  # Добавьте эту строку
+  allow_stopping_for_update = true
 }
 
 # Генерация inventory для Kubespray
