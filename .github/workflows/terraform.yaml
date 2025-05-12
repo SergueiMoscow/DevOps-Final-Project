@@ -90,4 +90,5 @@ jobs:
         run: |
           terraform apply -auto-approve \
             -var-file=main.auto.tfvars \
+            -var="allow_stopping_for_update=true" \
             -var="ssh_public_key=$(cat ~/.ssh/id_ed25519.pub)"
