@@ -39,3 +39,9 @@ variable "ssh_public_key" {
   description = "SSH public key for VM access"
   type        = string
 }
+
+variable "allow_stopping_for_update" {
+  description = "Allow Terraform to stop instance for update"
+  type        = bool
+  default     = false # По умолчанию false для безопасности
+}
