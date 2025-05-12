@@ -22,3 +22,12 @@ Bucket_name будем вытаскивать из TF_VARS:
           echo "bucket_name=${BUCKET_NAME}" >> $GITHUB_OUTPUT
 ```
 ![GitHub Secrets](images/image26.png)
+
+Теперь CI/CD работает:  
+![CI/CD success](images/image27.png)
+
+Лог из GitHub Actions:  
+![GitHub Actions log](images/image28.png)
+
+Проверка с изменением размера worker нод с 10 на 20 ГБ сработала:  
+![size changed](images/image29.png)
