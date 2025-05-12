@@ -105,7 +105,7 @@ resource "yandex_compute_instance" "k8s_worker" {
   }
   metadata = local.vm_metadata
   scheduling_policy {
-    preemptible = true # Прерываемая ВМ
+    preemptible = false # Прерываемая ВМ
   }
 }
 
