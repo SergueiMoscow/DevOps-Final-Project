@@ -17,129 +17,17 @@
 - **[04-k8s](04-k8s)**: Установка kubernetes на виртуальных машинах.
 - **[05-k8s-manifests](05-k8s-manifests)**: Для манифестов Kubernetes.
 
+### Этапы
+#### 1. [Подготовка бакета](01-sa_bucket.md)
+#### 2. [Создание инфраструктуры](02-infra.md)
+#### 3. [Cоздание контейнера и публикация его в Yandex Registry](03-registry.md)
+#### 4. [Установка kubernetes на виртуальных машинах](04-k8s.md)
+#### 5. [Установка приложения и мониторинга через манифесты Kubernetes](05-k8s-manifests.md)
+#### 6. [Создание CI/CD для изменения инфраструктуры](06-cicd-infra.md)
+#### 7. [Создание CI/CD для изменения приложения](07-cicd-app.md)
 
-# 01-sa_bucket.md
-# 02-infra.md
-# 03-registry.md
-# 04-k8s.md
-# 05-k8s-manifests.md
+---
 
-
-
-## Подготовка cистемы мониторинга
-
-### Подготовка мониторинга
-Будем использовать пакет [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus)
-
-Скачиваем манифесты kube-prometheus (версия 0.14.0), выполняем в директории с приложением:
-```
-wget https://github.com/prometheus-operator/kube-prometheus/archive/v0.14.0.tar.gz
-tar -xzf v0.14.0.tar.gz
-mv kube-prometheus-0.14.0/manifests .
-rm -rf kube-prometheus-0.14.0 v0.14.0.tar.gz
-```
-
-Применяем манифесты:  
-```
-kubectl apply --server-side -f manifests/setup
-kubectl wait \
-	--for condition=Established \
-	--all CustomResourceDefinition \
-	--namespace=monitoring
-kubectl apply -f manifests/
-```
-
-Проверяем:
-```
-kubectl get pods -n monitoring
-```
-![monitoring pods](images/image10.png)
-
-Ставим ingress:
-```
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.2/deploy/static/provider/cloud/deploy.yaml
-```
-
-Проверяем:  
-```
-kubectl get pods -n ingress-nginx
-```
-![ingress-nginx pods](images/image11.png)
-
-
-
-
-Создаём [grafana-deployment-patch.yaml](05-k8s-manifests/monitoring/grafana-deployment-patch.yaml), где определяем переменные для работы `Grafana` на endpoint `/grafana`, т.к. по умолчанию `Grafana` ожидает работу на корневом пути (/). Применяем его
-```bash
-kubectl apply -f monitoring/grafana-deployment-patch.yaml
-```
-
-Создаём [grafana-networkpolicy.yaml](05-k8s-manifests/monitoring/grafana-networkpolicy.yaml), чтобы разрешитиь входящий трафик к подам grafana.
-Применяем:
-```bash
-kubectl apply -f monitoring/grafana-networkpolicy.yaml
-```
-
-Пишем [ingress](05-k8s-manifests/monitoring/grafana-ingress.yaml) для grafana
-Применяем
-```bash
-kubectl apply -f monitoring/grafana-ingress.yaml
-```
-
-
-Проверяем поды приложения:
-```bash
-kubectl get pods -n default
-```
-[get pods -n default](images/image15.png)
-
-Генерируем конфиг для `metallb` с помощью [generate-metallb-config.sh](05-k8s-manifests/generate-metallb-config.sh). При этом в корне проекта должен быт актуальный [infra-outputs.json](infra-outputs.json).
-
-Проверяем конфиг для metallb [metallb-config.yaml](05-k8s-manifests/metallb/metallb-config.yaml)
-
-Применяем
-```bash
-kubectl apply -f metallb/metallb-config.yaml
-```
-
-Проверяем
-```bash
-kubectl get ipaddresspool -n metallb-system
-kubectl get l2advertisement -n metallb-system
-```
-
-После настройки MetalLB сервис ingress-nginx должен получить внешний IP:
-```bash
-kubectl get svc -n ingress-nginx
-```
-![ingress-nginx service](images/image13.png)
-
-
-Делегируем домен на наш IP
-Проверяем ingress, убеждаемся, что домен делегирован на наш IP:
-```bash
-kubectl get ingress -A
-dig netology2.sushkovs.ru +short
-```
-![get ingress](images/image17.png)
-
-
-Проверяем, что сервисы получили внешине IP:
-```bash
-kubectl get svc -A
-```
-![get svc](images/image16.png)
-
-
-Проверяем доступность приложений
-```bash
-curl http://netology2.sushkovs.ru/app
-curl http://netology2.sushkovs.ru/grafana
-```
-![app in browser](images/image18.png)
-
-Из браузера:  
-![app in browser](images/image19.png)
-
-kubectl apply -f grafana-networkpolicy.yaml
-kubectl patch deployment -n monitoring grafana --patch-file grafana-deployment-patch.yaml
+Для развёртывания всей инфраструктуры с установкой приложения и мониторинга одной комадной можно использовать [all.sh](all.sh). При этом в облаке должны уже должны быть
+- Созданы сервисный аккаунт и S3-бакет, используемый как бекенд для хранения состояния Terraform. ([шаг 1](01-sa_bucket.md))
+- Создан контейнер и опубликован в Yandex Registry. ([шаг 3](03-registry.md))
