@@ -34,3 +34,8 @@ variable "cidr" {
   default     = ["10.10.1.0/24", "10.10.2.0/24", "10.10.3.0/24"]
   description = "https://cloud.yandex.ru/docs/overview/concepts/geo-scope"
 }
+
+variable "ssh_public_key" {
+  description = "SSH public key for VM access"
+  type        = string
+}

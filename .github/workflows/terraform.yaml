@@ -23,6 +23,13 @@ jobs:
         with:
           terraform_version: 1.11.4
 
+      - name: Generate SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -q -N ""
+          echo "Public key:"
+          cat ~/.ssh/id_ed25519.pub
+
       - name: Create YC auth key file
         run: |
           cat <<EOF > ~/.yc_authorized_key.json
@@ -77,5 +84,7 @@ jobs:
         run: terraform plan -var-file=main.auto.tfvars
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
-        run: terraform apply -auto-approve -var-file=main.auto.tfvars
+        run: |
+          terraform apply -auto-approve \
+            -var-file=main.auto.tfvars \
+            -var="ssh_public_key=$(cat ~/.ssh/id_ed25519.pub)"
