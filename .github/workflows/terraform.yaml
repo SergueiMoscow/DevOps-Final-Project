@@ -81,7 +81,9 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -var-file=main.auto.tfvars
+        run: terraform plan \
+            -var-file=main.auto.tfvars \
+            -var="ssh_public_key=$(cat ~/.ssh/id_ed25519.pub)"
 
       - name: Terraform Apply
         run: |
