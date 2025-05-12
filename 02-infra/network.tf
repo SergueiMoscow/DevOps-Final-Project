@@ -23,13 +23,13 @@ resource "yandex_vpc_subnet" "subnet_zones" {
   zone           = var.subnet_zones[count.index]
   network_id     = yandex_vpc_network.netology.id
   v4_cidr_blocks = [var.cidr[count.index]]
-  route_table_id = yandex_vpc_route_table.k8s_route_table.id  # Привязываем таблицу маршрутизации
+  route_table_id = yandex_vpc_route_table.k8s_route_table.id # Привязываем таблицу маршрутизации
 }
 
 
 output "subnet_ids" {
   value = {
-    for idx, subnet in yandex_vpc_subnet.subnet_zones : 
+    for idx, subnet in yandex_vpc_subnet.subnet_zones :
     subnet.zone => subnet.id
   }
 }

@@ -60,7 +60,7 @@ data "yandex_compute_image" "ubuntu_image" {
 # ВМ для control plane
 resource "yandex_compute_instance" "k8s_control_plane" {
   name        = "k8s-control-plane"
-  zone        = var.subnet_zones[0]  # ru-central1-a
+  zone        = var.subnet_zones[0] # ru-central1-a
   platform_id = "standard-v3"
   resources {
     cores         = 2
@@ -85,7 +85,7 @@ resource "yandex_compute_instance" "k8s_control_plane" {
 resource "yandex_compute_instance" "k8s_worker" {
   count       = 2
   name        = "k8s-worker-${count.index}"
-  zone        = var.subnet_zones[count.index + 1]  # ru-central1-b, ru-central1-d
+  zone        = var.subnet_zones[count.index + 1] # ru-central1-b, ru-central1-d
   platform_id = "standard-v3"
   resources {
     cores         = 2
@@ -105,7 +105,7 @@ resource "yandex_compute_instance" "k8s_worker" {
   }
   metadata = local.vm_metadata
   scheduling_policy {
-    preemptible = true  # Прерываемая ВМ
+    preemptible = true # Прерываемая ВМ
   }
 }
 
