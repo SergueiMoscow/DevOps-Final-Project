@@ -2,17 +2,17 @@
   "control_plane_internal_ip": {
     "sensitive": false,
     "type": "string",
-    "value": "10.10.1.12"
+    "value": "10.10.1.27"
   },
   "control_plane_ip": {
     "sensitive": false,
     "type": "string",
-    "value": "89.169.141.44"
+    "value": "84.201.158.162"
   },
   "k8s_security_group_id": {
     "sensitive": false,
     "type": "string",
-    "value": "enp97gok1jospetus71s"
+    "value": "enp58ogjjncbp2i71ja2"
   },
   "subnet_ids": {
     "sensitive": false,
@@ -25,9 +25,9 @@
       }
     ],
     "value": {
-      "ru-central1-a": "e9bc5e2lou967u6dmami",
-      "ru-central1-b": "e2l1lm2gqd6cffl71eb7",
-      "ru-central1-d": "fl8jb5pn5t53232nblhc"
+      "ru-central1-a": "e9b13spnugevqcp8t7r7",
+      "ru-central1-b": "e2l43ke9vlfg1sjl0844",
+      "ru-central1-d": "fl8dt167l2nu47b2n1pu"
     }
   },
   "subnet_zones": {
@@ -52,7 +52,7 @@
       ]
     ],
     "value": [
-      "10.10.2.21",
+      "10.10.2.18",
       "10.10.3.15"
     ]
   },
@@ -66,8 +66,8 @@
       ]
     ],
     "value": [
-      "84.252.139.17",
-      "158.160.181.244"
+      "89.169.171.113",
+      "158.160.179.217"
     ]
   }
 }

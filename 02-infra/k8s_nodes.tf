@@ -95,7 +95,7 @@ resource "yandex_compute_instance" "k8s_worker" {
   boot_disk {
     initialize_params {
       image_id = data.yandex_compute_image.ubuntu_image.id
-      size     = 20
+      size     = 10
     }
   }
   network_interface {

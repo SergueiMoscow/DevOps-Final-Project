@@ -26,6 +26,7 @@ check_command "Создание infra-outputs.json"
 # Получаем IP адреса
 CONTROL_IP=$(jq -r '.control_plane_ip.value' ../infra-outputs.json)
 WORKER_IPS=$(jq -r '.worker_ips.value[]' ../infra-outputs.json)
+cd ..
 
 # # 2. Настройка DNS (если установлен YC CLI)
 # echo "🌐 Этап 2: Настройка DNS (если доступен YC CLI)"
@@ -49,8 +50,9 @@ WORKER_IPS=$(jq -r '.worker_ips.value[]' ../infra-outputs.json)
 
 # 3. Установка Kubernetes
 echo "⚙️ Этап 3: Установка Kubernetes кластера"
-cd ../04-k8s
+cd 04-k8s
 ./deploy_k8s.sh
+cd ..
 check_command "Установка Kubernetes"
 
 # Ждем доступности API сервера
@@ -72,7 +74,7 @@ fi
 
 # 4. Настройка MetalLB
 echo "🔌 Этап 4: Настройка MetalLB"
-cd ../05-k8s-manifests
+cd 05-k8s-manifests
 
 echo "Настройка strictARP..."
 kubectl get configmap kube-proxy -n kube-system -o yaml | \
